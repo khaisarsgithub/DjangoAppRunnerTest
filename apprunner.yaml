@@ -1,0 +1,35 @@
+version: 1.0
+runtime: python3.11
+
+source:
+  type: git
+  repository: 
+    url: https://github.com/khaisarsgithub/DjangoAppRunnerTest
+    branch: main
+
+build:
+  commands:
+    install:
+      - sudo apt install -y python3-pip
+      - pip3 install --upgrade pip3
+      - pip3 install -r requirements.txt
+      
+    build:
+      - python3 manage.py collectstatic --noinput
+      - python3 manage.py migrate
+
+run:
+  command: gunicorn DjangoAppRunnerTest.wsgi:application --bind 0.0.0.0:8000
+
+instance_configuration:
+  cpu: 1024
+  memory: 2048
+
+network_configuration:
+  ingress_configuration:
+    is_publicly_accessible: true
+
+service:
+  name: DjangoAppRunnerTest=
+  health_check:
+    path: /healthz
