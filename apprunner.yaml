@@ -10,13 +10,14 @@ source:
 build:
   commands:
     install:
-      - sudo apt install -y python3 python3-pip virtualenv 
+      - sudo apt install -y python3 python3-pip virtualenv
+      - python3 -m venv venv
       - source venv/bin/activate
-      - pip3 install -r requirements.txt
+      - pip install -r requirements.txt
       
     build:
-      - python3 manage.py collectstatic --noinput
-      - python3 manage.py migrate
+      - python manage.py collectstatic --noinput
+      - python manage.py migrate
 
 run:
   command: gunicorn DjangoAppRunnerTest.wsgi:application --bind 0.0.0.0:8000
@@ -30,6 +31,6 @@ network_configuration:
     is_publicly_accessible: true
 
 service:
-  name: DjangoAppRunnerTest=
+  name: DjangoAppRunnerTest
   health_check:
     path: /healthz
