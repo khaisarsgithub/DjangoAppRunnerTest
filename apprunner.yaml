@@ -19,8 +19,8 @@ build:
       - django-admin --version
       
     build:
-      - python manage.py collectstatic --noinput
-      - python manage.py migrate
+      - python3 manage.py collectstatic --noinput
+      - python3 manage.py migrate
 
 run:
   command: gunicorn DjangoAppRunnerTest.wsgi:application --bind 0.0.0.0:8000
